@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Daraz{% endblock title %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar .nav-link.custom-font {
+            font-size: 0.65rem; /* Adjust to desired size */
+            padding: 0.3rem 0.5rem;
+             /* Compact spacing */
+            color: white;
+        }
+        
+        /* Adjust the search bar size */
+        .custom-search {
+            width: 300px; /* Adjust the width */
+        }
+        
+        /* Align search button properly */
+        .custom-button {
+            padding: 0.3rem 0.75rem; /* Adjust padding */
+            font-size: 0.85rem; /* Match text size */
+        }
+        
+        /* Ensure the navbar looks compact */
+        .navbar {
+            padding: 0.5rem 1rem; /* Reduce overall padding */
+        }
+
+        .container-fluid{
+            background-color:#FF6A13;
+        }
+        
+
+        
+        .navbar-brand{
+            color:white;
+            font-size:1rem;
+        }
+       .logo {
+    width: 30px; /* Adjust width */
+    height: auto; /* Maintain aspect ratio */
+}
+
+        
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <!-- Brand -->
+            <a class="navbar-brand" href="#">
+            <img src="{% static 'daraz/images/daraz-logo-png_seeklogo-429389.svg' %}" alt="Daraz Logo" style="width: 30px; height: auto; margin-right: 5px; class="logo">
+            </a>
+            <!-- Toggle Button for Mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link custom-font" href="{% url "home" %}">HOME</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link custom-font" href="{% url 'saveapp' %}">SAVE MORE ON APP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-font" href="{% url 'sellerregister' %}">BECOME A SELLER</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-font" href="{% url 'help' %}">HELP & SUPPORT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-font" href="{% url 'login' %}">LOGIN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-font" href="{% url 'register' %}">SIGNUP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link custom-font" href="{% url 'changelang' %}">CHANGE LANGUAGE</a>
+                    </li>
+                    
+                </ul>
+               
+            </div>
+            <div class="container-fluid">
+
+                <form class="d-flex w-100" action="{% url 'search' %}" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search in daraz" aria-label="Search">
+                    <a class="cart" href="{% url "cart" %}">
+                     <img src="{% static 'daraz/images/shopping-cart.svg' %}" alt="cart Logo" style="width: 50px; height: auto; margin-right: 5px; class="logo">
+                     </a>
+                    
+                </form>
+             </div>
+        </div>
+       
+         </div>
+    
+    </nav>
+   
+
+    <!-- Body Content -->  {% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center">This is the Daraz Home Page</h1>
+    </div>
+    {% endblock body %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

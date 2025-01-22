@@ -1,0 +1,197 @@
+html ,body {
+    background-color: whitesmoke;
+    margin: 0;
+    padding:0;
+
+}
+
+
+.forms {
+    background-color: lightpink;
+    margin-block: 50px 5px;
+    text-align: center;
+    padding-top: 10px;    /* Padding on the top */
+    padding-right: 1px;  /* Padding on the right */
+    padding-bottom: 10px; /* Padding on the bottom */
+    padding-left: 1px;  
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.forms input[type="text"],
+.forms textarea {
+    width: 40%; /* Full width */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: inherit;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle inset shadow */
+}
+
+.forms input[type="text"]:focus,
+.forms textarea:focus {
+    border-color: #ff69b4; /* Highlighted border color */
+    outline: none;
+    box-shadow: 0 0 5px #ff69b4;
+}
+
+/* Labels */
+.forms label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block; /* Ensure labels are on their own line */
+}
+
+
+.navbar {
+    display: flex;
+    background-color: pink;
+    height: 20px;
+    align-items: center;
+    padding: 5px 10px;
+    margin: 0;
+    top:0;
+    left:0;
+    right:0;
+    border-bottom: 1px solid #ccc;
+}
+    
+.nav-link ul {
+    list-style-type: none; /* Remove bullets */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Display list items in a horizontal row */
+    /* Align items to the left */
+}
+
+.nav-links ul li {
+    margin-left: 20px; /* Space between nav links */
+}
+
+.nav-link ul li a {
+    text-decoration: none; /* Remove underline */
+    color: white; /* Change to your desired color */
+    font-size: 16px; /* Adjust font size */
+    padding: 10px 15px; /* Add padding for better clickability */
+    border-radius: 5px; /* Optional: Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.search-bar {
+    margin-left: auto; /* Push the search bar to the right end */
+    display: flex; /* Keep search bar items in a row */
+    align-items: center; /* Vertically align items in the search bar */
+    gap: 10px; /* Add space between items */
+}
+button[type="submit"] {
+    background-color:#ff69b4d8;/* Set the background color to pink */
+    color: white; /* Set the text color to white for better visibility */
+    padding: 10px 20px; /* Add some padding to the button */
+    border: none; /* Remove the border */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    cursor: pointer; /* Change the cursor to pointer when hovering */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+button[type="submit"]:hover {
+    background-color: pink; /* Change the color to a darker pink when hovered */
+}
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    transition: transform 0.3s ease;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+body{
+    padding-bottom: 50px;
+}
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    transition: transform 0.3s ease;
+}
+.btn {
+    padding: 10px 20px;
+    background-color:#ff69b4d8;;
+    color: white;
+    text-decoration: none;
+    font:bold;
+    margin-right: 10px;
+    
+    border-radius:5px ;
+}
+
+.btn:hover {
+    background-color:lightpink;
+}
+footer {
+    background-color: pink;
+    padding: 10px 20px;  /* Add some horizontal padding for better spacing */
+    height: auto;  /* Set to auto to adjust to the content */
+    text-align: center;
+    color: white;
+    margin: 0;
+    position: fixed;  /* Make it stay at the bottom of the page */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;  /* Ensure it stays above other content */
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-icon {
+    color: Blue;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+.social-icon:hover {
+    color: #ff69b4; /* Change this to your desired hover color */
+}
+.btns {
+    padding: 10px 20px;
+    background-color:#ff69b4d8;;
+    color: white;
+    text-decoration: none;
+    font:bold;
+    margin-left: 50px;
+
+    
+    border-radius:5px ;
+}
+/* For the container holding the genre field */
+.genre-group {
+display: flex;
+flex-direction: column; /* Align items in a vertical column */
+gap: 8px; /* Space between radio buttons */
+margin-top: 10px;
+}
+
+
