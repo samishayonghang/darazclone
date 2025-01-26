@@ -6,7 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Daraz{% endblock title %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+   
     <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+         }
+    
         .navbar .nav-link.custom-font {
             font-size: 0.65rem; /* Adjust to desired size */
             padding: 0.3rem 0.5rem;
@@ -27,12 +36,19 @@
         
         /* Ensure the navbar looks compact */
         .navbar {
-            padding: 0.5rem 1rem; /* Reduce overall padding */
+            padding: 0.5rem 1rem; /* Reduce overall padding *//
+            width:100%;
         }
 
         .container-fluid{
             background-color:#FF6A13;
+              padding-left: 0;
+              padding-right: 0;
         }
+        .navbar .container-fluid {
+          padding-left: 0; /* Remove left padding */
+          padding-right: 0; /* Remove right padding */
+      }
         
 
         
@@ -41,54 +57,93 @@
             font-size:1rem;
         }
        .logo {
-    width: 30px; /* Adjust width */
-    height: auto; /* Maintain aspect ratio */
-}
+        width: 30px; /* Adjust width */
+        height: auto; /* Maintain aspect ratio */
+       }
+       .link {
+          text-decoration: none !important;  /* Ensures underline is removed */
+          color: blue;         /* Inherit the color from the surrounding text */
+          cursor: default !important;        /* Removes the clickable cursor */
+        }
+        .btn-yellow {
+          background-color:#FF6A13; /* Yellow color */
+          border-color:#FF6A13;     /* Border to match the background */
+          color: white;              /* Text color to make it visible on yellow */
+      }
+      
+      .btn-yellow:hover {
+          background-color:#FF6A13; /* Slightly darker yellow on hover */
+          border-color:#FF6A13;     /* Same darker border */
+      }
+      
+
+
+
 
         
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light w-100">
+      <div class="container-fluid px-0">
             <!-- Brand -->
-            <a class="navbar-brand" href="#">
-            <img src="{% static 'daraz/images/daraz-logo-png_seeklogo-429389.svg' %}" alt="Daraz Logo" style="width: 30px; height: auto; margin-right: 5px; class="logo">
-            </a>
+        <a class="navbar-brand" href="#">
+          <img src="{% static 'daraz/images/daraz-logo-png_seeklogo-429389.svg' %}" alt="Daraz Logo" style="width: 30px; height: auto; margin-right: 5px; class="logo">
+        </a>
             <!-- Toggle Button for Mobile -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
             <!-- Navbar Links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link custom-font" href="{% url "home" %}">HOME</a>
-                    </li>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link custom-font" href="{% url "home" %}">HOME</a>
+            </li>
+         
+            <li>
+              <a href="{% url "customerdashboard" %}" class="block py-2 px-3">Dashboard </a>
+            </li>
+            <form method="POST" action="{% url 'logout' %}">
+             {% csrf_token %}
+             <button type="submit">Logout</button>
+            </form>
 
-                    <li class="nav-item">
-                        <a class="nav-link custom-font" href="{% url 'saveapp' %}">SAVE MORE ON APP</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link custom-font" href="{% url 'sellerregister' %}">BECOME A SELLER</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link custom-font" href="{% url 'help' %}">HELP & SUPPORT</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link custom-font" href="{% url 'login' %}">LOGIN</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link custom-font" href="{% url 'register' %}">SIGNUP</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link custom-font" href="{% url 'changelang' %}">CHANGE LANGUAGE</a>
-                    </li>
+
+         
+            <li class="nav-item">
+              <a class="nav-link custom-font" href="{% url 'saveapp' %}">SAVE MORE ON APP</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-font" href="{% url 'sellerregister' %}">BECOME A SELLER</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-font" href="{% url 'help' %}">HELP & SUPPORT</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-font" href="{% url 'login' %}">LOGIN</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-font" href="{% url 'register' %}">SIGNUP</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link custom-font" href="{% url 'changelang' %}">CHANGE LANGUAGE</a>
+            </li>
+        
+            
                     
-                </ul>
+                    
+          </ul>
+
+                    
+                   
+                    
+
+                    
+                  
                
-            </div>
+        </div>
             <div class="container-fluid">
 
                 <form class="d-flex w-100" action="{% url 'search' %}" method="GET">
@@ -99,18 +154,175 @@
                     
                 </form>
              </div>
-        </div>
+          </div>
        
-         </div>
+        </div>
     
     </nav>
-   
+
+    {% if messages %}
+      {% for message in messages  %}
+        <span >{{message}} </span> 
+      {% endfor %}
+    {% endif %}
+    {% block banner_slider %}
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+         
+          <div class="carousel-item">
+            <img src="{% static 'daraz/images/Hot-picks-feature.png'%}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="{%static 'daraz/images/1200x450_2.png'%}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item active">
+            <img src="{%static 'daraz/images/1200x450-3.svg'%}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item active">
+            <img src="{%static 'daraz/images/1200x450_2.svg'%}" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item active">
+            <img src="{%static 'daraz/images/1200x450-3.png'%}" class="d-block w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+
+    {% endblock banner_slider %}
+    {% block livesale %}
+    
+    {% endblock livesale %}
+    {% block main-content %}
+    <div class="m-3">
+      <h2>Flash Sale</h2>
+      <div class="d-flex flex-row flex-wrap">
+          <!-- Card 1 -->
+        <div class="card text-center m-2" style="width: 12rem;">
+          <img src="{% static 'daraz/images/dove-body-wash-D55BoAC-600.jpg' %}" class="card-img-top" alt="Dove Body Wash" style="height: 200px; object-fit: cover;">
+          <div class="card-body">
+           <h5 class="card-title fw-bold"> <a href="{% url "detail" %}">  Dove Body Wash </a></h5>
+           <p class="card-text fs-5">Rs 500</p>
+         </div>
+        </div>
+          <!-- Card 2 -->
+        <div class="card text-center m-2" style="width: 12rem;">
+          <img src="{% static 'daraz/images/—Pngtree—casual shoes_5626499.png' %}" class="card-img-top" alt="Men Shoes" style="height: 200px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title fw-bold">Men Shoes</h5>
+            <p class="card-text fs-5">Rs 1000</p>
+          </div>
+        </div>
+        <div class="card text-center m-2" style="width: 12rem;">
+         <img src="{% static 'daraz/images/kisspng-sanitary-napkin-always-cloth-napkins-nykaa-menstru-5ae5c32d1af5e0.3092520115250071491104.png' %}" class="card-img-top" alt="Men Shoes" style="height: 200px; object-fit: cover;">
+         <div class="card-body">
+           <h5 class="card-title fw-bold">Sanitary pad</h5>
+           <p class="card-text fs-5">Rs 50</p>
+          </div>
+        </div>
+        <div class="card text-center m-2" style="width: 12rem;">
+          <img src="{% static 'daraz/images/kisspng-hot-water-bottle-heat-bag-small-mini-hot-water-bottle-5a93a8e6262663.1026180115196264701563.png' %}" class="card-img-top" alt="Men Shoes" style="height: 200px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title fw-bold">Hot water bag electrical</h5>
+            <p class="card-text fs-5">Rs 300</p>
+          </div>
+        </div>
+        <div class="card text-center m-2" style="width: 12rem;">
+          <img src="{% static 'daraz/images/kisspng-ceiling-fans-table-punkah-home-appliance-fan-5acb850f5b47d9.5436895615232873113739.png' %}" class="card-img-top" alt="Men Shoes" style="height: 200px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title fw-bold">Table Fan</h5>
+            <p class="card-text fs-5">Rs 1500</p>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+    {% endblock main-content %}
+
+    {% block category %}
+    <h2>Category</h2>
+    <div class="d-flex flex-row flex-wrap">
+      <div class="card position-relative" style="width:14rem; height:14rem;">
+        <img src="{% static 'daraz/images/kisspng-winter-clothing-children-s-clothing-winter-kids-5b4216674cb438.2537673015310577673142.png' %}" class="card-img-top" alt="...">
+        <div class="card-img-overlay d-flex align-items-center justify-content-center">
+          <h5 class="card-title text-white text-center" style="font-size:0.85rem; background:rgba(0, 0, 0, 0.6); padding: 5px; border-radius:5px;">Children Winter Essentials</h5>
+        </div>
+      </div>
+    <a href="{% url "insidecategory" %}">
+      <div class="card position-relative" style="width:14rem; height:14rem;">
+      
+        <img src="{% static 'daraz/images/kisspng-lotion-cream-cosmetics-christina-guam-5b37efda047e61.2268809115303925380184.png' %}" class="card-img-top" alt="...">
+        <div class="card-img-overlay d-flex align-items-center justify-content-center">
+          <h5 class="card-title text-white text-center" style="font-size:0.85rem; background:rgba(0, 0, 0, 0.6); padding: 5px; border-radius:5px;"> Skin Care </h5></a>
+        </div>
+      </div>
+    </a>
+      <div class="card position-relative" style="width:14rem; height:14rem;">
+        <img src="{% static 'daraz/images/7360485e8ba8654f50e34ad63e7d5be7.png' %}" class="card-img-top" alt="...">
+        <div class="card-img-overlay d-flex align-items-center justify-content-center">
+          <h5 class="card-title text-white text-center" style="font-size:0.85rem; background:rgba(0, 0, 0, 0.6); padding: 5px; border-radius:5px;">Electronics Gadgets</h5>
+        </div>
+      </div>
+      <div class="card position-relative" style="width:14rem; height:14rem;">
+        <img src="{% static 'daraz/images/2bcd42e6d403db5883c021a5e15945c1.png' %}" class="card-img-top" alt="...">
+        <div class="card-img-overlay d-flex align-items-center justify-content-center">
+          <h5 class="card-title text-white text-center" style="font-size:0.85rem; background:rgba(0, 0, 0, 0.6); padding: 5px; border-radius:5px;">Groceries</h5>
+        </div>
+      </div>
+      <div class="card position-relative" style="width:14rem; height:14rem;">
+        <img src="{% static 'daraz/images/2c5946f9fd25c9148338d2885ae653.png' %}" class="card-img-top" alt="...">
+        <div class="card-img-overlay d-flex align-items-center justify-content-center">
+          <h5 class="card-title text-white text-center" style="font-size:0.85rem; background:rgba(0, 0, 0, 0.6); padding: 5px; border-radius:5px;">Clothing</h5>
+        </div>
+      </div>
+    </div>
+    {% endblock category %}
+    
 
     <!-- Body Content -->  {% block body %}
     <div class="container mt-5">
         <h1 class="text-center">This is the Daraz Home Page</h1>
     </div>
     {% endblock body %}
+    <footer class="container-fluid bg-dar text-color p-3 mt-5 d-flex flex-column align-items-center text-center">
+      <small class="text-white mb-2">Copyright &copy; 2025 || Designed By Samisha ||</small>
+      
+      <img src="{% static 'daraz/images/' %}" alt="" class="img-fluid mb-2" style="height: 30px;">
+  
+      <small class="text-white mb-2">Payment Methods</small>
+  
+      <div class="d-flex justify-content-center gap-3">
+          <!-- eSewa Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
+              <circle cx="12" cy="12" r="12" fill="#1F9F3C" />
+              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="10" fill="#fff" font-family="Arial, sans-serif">eSewa</text>
+          </svg>
+          
+          <!-- VISA Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+              <rect width="48" height="32" rx="4" fill="white" />
+              <text x="50%" y="58%" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="purple" font-weight="bold">
+                  VISA
+              </text>
+          </svg>
+          
+          <!-- COD Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+            <rect width="90" height="90" rx="6" fill="white" />
+            <text x="50%" y="54%" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="green" font-weight="bold">
+                COD
+            </text>
+        </svg>
+      </div>
+    </footer>
+  
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

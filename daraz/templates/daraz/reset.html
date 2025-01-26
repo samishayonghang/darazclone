@@ -1,0 +1,39 @@
+{% extends "daraz/base.html" %}
+{% block main-content %}{% endblock main-content %}
+{% block category %}{% endblock category %}
+{% block banner_slider %}{% endblock banner_slider %}
+
+{% block body %}
+<div class="reset-container">
+    <h3>Password Reset</h3>
+    <form action="{% url 'resetpassword' %}" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        {% if form.email.errors %}
+          <div class="text-danger">
+              {% for error in form.email.errors %}
+                 <p>{{ error }}</p>
+              {% endfor %}
+          </div>
+        {% endif %}
+        
+        <button type="submit" class="btn btn-reset w-100">Send Reset Link</button>
+        {% if form.non_field_errors %}
+           <div class="text-danger mt-3">
+              {% for error in form.non_field_errors %}
+                 <p>{{ error }}</p>
+              {% endfor %}
+           </div>
+        {% endif %}
+    </form>
+    <div class="text-center mt-3">
+        <a href="{% url 'login' %}" class="text-decoration-none">Back to Login</a>
+    </div>
+</div>
+
+
+
+{% endblock body %}

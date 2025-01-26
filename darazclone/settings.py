@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'daraz',
+    'customer',
+    'seller',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +141,17 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
  #custom usermodel
 AUTH_USER_MODEL='daraz.User'
+MEDIA_URL='/media/'
+MEDIA_ROOT=BASE_DIR/'media'
+SITE_DOMAIN='http://127.0.0.1:8000'
+SITE_NAME='daraz shopping platform'
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'live.smtp.mailtrap.io'
+EMAIL_HOST_USER = 'api'
+EMAIL_HOST_PASSWORD = 'f32187b2ddcdf27d64ebb54fe9159cb5'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS=True
+
+
+#when user click on logout button
+LOGOUT_REDIRECT_URL='login'

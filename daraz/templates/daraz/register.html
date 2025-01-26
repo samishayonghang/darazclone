@@ -2,11 +2,90 @@
 
 {% block title %}{% endblock title %}
 
+{% block banner_slider %}{% endblock banner_slider %}
+{% block main-content %}{% endblock main-content %}
+
+{% block category %}{% endblock category %}
+
 {% block body %}
-<form action="" method="POST" enctype=multipart/form-data>
-    {% csrf_token %}
-    {{form.as_p}}
-</form>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title text-center mb-4">Sign Up</h5>
+            <form action="{% url "register" %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              
+              <div class="mb-3">
+                <label for="email" class="form-label visually-hidden"></label>
+                <input type="email"  value="" name="{{form.email.name}}" class="form-control" id="email" placeholder="Please enter your email">
+              </div>
+             
+            
+              <div class="mb-3">
+                <label for="name" class="form-label visually-hidden"></label>
+                <input type="text" value=""  name="{{form.name.name}}"class="form-control" id="name" placeholder="Please enter your full name">
+              </div>
+             
+              <div class="mb-3">
+                <label for="password" class="form-label visually-hidden"></label>
+                <input type="password"  name="{{form.password1.name}}" class="form-control" id="password" placeholder="Enter your password">
+                <div id="passwordHelp" class="form-text"></div>
+              </div>
+            
+            
+              <div class="mb-3">
+                <label for="confirm_password" class="form-label visually-hidden"></label>
+                <input type="password" name="{{form.password2.name}}" class="form-control" id="confirm_password" placeholder="Confirm your password">
+                <div id="passwordHelp" class="form-text"> </a></div>
+              </div>
+            
+              
+              <button type="submit" class="btn btn-yellow w-100">REGISTER</button>
+              {% if form.errors %}
+                <div class="text-danger">
+                 {% for error in form.non_field_errors %}
+                   <p>{{ error }}</p>
+                 {% endfor %}
+                 {% for field in form %}
+                   {% for error in field.errors %}
+                     <p>{{ error }}</p>
+                   {% endfor %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            
+
+            </form> 
+             
+              <div class="text-center mt-3">
+               <small>Do have an account? <a href="{% url "login" %}" class="link"> Log in</a> </small>
+                <p> Or Sign in with </p>
+             
+            
+                
+             
+              </div>
+              <div class="text-center mt-3">
+                <small> <a href="{% url "register" %}" class="link">
+                 <i class="bi bi-google"></i> Google </a>
+                </small>
+                <small> <a href="{% url "register" %}" class="link">
+                 <i class="bi bi-facebook"></i>  Facebook  </a>
+                </small>
+              </div>
+
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
 
 
 {% endblock body %}

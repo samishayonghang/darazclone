@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .body {
+            padding: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+        }
+        .body p {
+            margin-bottom: 20px;
+        }
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .button-container a {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .button-container a:hover {
+            background-color: #0056b3;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            padding: 10px;
+            background: #f1f1f1;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>Password Reset Request</h1>
+        </div>
+        <div class="body">
+            <p>Hello,</p>
+            <p>You are receiving this email because we received a password reset request for your account. If you didn’t request this, please ignore this email.</p>
+            <p>To reset your password, click the button below:</p>
+            <div class="button-container">
+                <a href="{{ reset_url }}" target="_blank">Reset Password</a>
+            </div>
+            <p>If the button above doesn't work, copy and paste the following URL into your browser:</p>
+            <p>{{ reset_url }}</p>
+        </div>
+        <div class="footer">
+            <p>If you have any questions, contact our support team at <a href="mailto:support@example.com">support@example.com</a>.</p>
+            <p>Thank you,<br>The Daraz Team</p>
+        </div>
+    </div>
+</body>
+</html>
