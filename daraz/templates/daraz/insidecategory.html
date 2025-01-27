@@ -7,23 +7,28 @@
 {% block category %}{% endblock category %}
 {% block banner_slider %}{% endblock banner_slider %}
 {% block main-content %}
-<div class="m-3">
-  <h2>skincare category</h2>
-  {% for s in skincares %}
-  <div class="d-flex flex-row flex-wrap">
-      <!-- Card 1 -->
-    <div class="card text-center m-2" style="width: 12rem;">
-      <img src="{{s.product_image}}"    class="card-img-top" alt="" style="height: 200px; object-fit: cover;">
-      <div class="card-body">
-       <h5 class="card-title fw-bold"> <a href="{% url "detail" %}"> {{s.title}}</a></h5>
-       <p class="card-text fs-5">{{s.sellingprice}}</p>
-       
-     </div>
-     </div>
-    </div>
-      <!-- Card 2 -->
-  
- {% endfor %} 
-</div>
+ <div class="m-3">
+   {% if products %}
+     <h2>{{ category }} category</h2>
+     <div class="d-flex flex-row flex-wrap">
+        {% for product in products %}
+          <div class="card text-center m-2" style="width: 12rem;">
+            <img src="{{ product.product_image.url }}" class="card-img-top" alt="" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">
+                <a href="{% url 'detail' product.id %}">{{ product.title }}</a>
+              </h5>
+              <p class="card-text fs-5">
+                <del>Rs.{{ product.selling_price|floatformat:0 }}</del><br>
+                <ins style="text-decoration: none;">Rs.{{ product.discounted_price|floatformat:0 }}</ins>
+              </p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <h2>No products found for the selected category.</h2>
+    {% endif %}
+  </div>
 
 {% endblock main-content %}

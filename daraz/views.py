@@ -3,7 +3,7 @@ from.models import User,Customer,Product,Cart,Orderplaced
 from django.views import View
 from.forms import CustomUserCreationForm,PasswordResetForm
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes,force_str
 from django.contrib.auth.tokens import default_token_generator
@@ -160,16 +160,35 @@ def changepassword(request):
    return render(request,'daraz/changepassword.html')
 def buy(request):
    return render(request,'daraz/buy.html')
-def detail(request):
-   return render(request,'daraz/detail.html')
+#def detail(request):
+   #return render(request,'daraz/detail.html')
+class ProductDetailView(View):
+   def get(self,request,pk):
+      product= Product.objects.get(pk=pk)
+      return render(request,'daraz/detail.html',{'product':product})
+
 
 class ProductView(View):
    def get(self,request):
-      skincare=Product.objects.filter(category='skincare')
-      grocery=Product.objects.filter(category='groceries')
-      gadget=Product.objects.filter(category='gadgets')
-      winterchildren=Product.objects.filter(category='winterchildren')
-      return render (request,'daraz/insidecategory.html',{'skincare':skincare,'grocery':grocery,'gadgets':gadget,'winterchildrens':winterchildren})
+         category = request.GET.get('category', None)  # Default to None if not provided
+
+        # Filter products based on the category
+         if category == 'skincare':
+            products = Product.objects.filter(category='skincare')
+         elif category == 'groceries':
+            products = Product.objects.filter(category='groceries')
+         elif category == 'gadgets':
+            products = Product.objects.filter(category='gadgets')
+         elif category == 'winterchildren':
+            products = Product.objects.filter(category='winterchildren')
+         elif category == 'clothing':
+            products = Product.objects.filter(category='clothing')
+         else:
+            products = None  # If no valid category, show nothing or handle it differently
+
+        # Pass the filtered products to the template
+         return render(request, 'daraz/insidecategory.html', {'products': products, 'category': category})
+   
 
 
 
@@ -197,6 +216,10 @@ def activate(request,uidb64,token):
       messages.error(request,"invalid activation link")
       return redirect('login')
       
-
+def logout_view(request):
+    if request.user.is_authenticated:
+        logout(request)
+        messages.success(request, "You have been logged out successfully.")  # Logs out the user
+        return redirect('login')  
 
 

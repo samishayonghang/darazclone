@@ -5,28 +5,19 @@
 <div class="container my-5">
  <div class="row">
     <div class="col-sm-6 text-center align-self-center">
-        <img src="{% static "daraz/images/dove-body-wash-D55BoAC-600.jpg" %}" alt="" class="img-fluid img-thumbnail">
+       <img src="{{product.product_image.url}}" %}" alt="" class="img-fluid img-thumbnail">
     </div>
     <div class="col-sm-5 offset-sm-1">
-     <h2>Product Title:Dove body wash </h2>
+     <h2>Product Title:{{product.title}}</h2>
      <hr>
-     <p>Product Description:dove body scrub and wash with cocoa butter flavourand smooth textures.Dove body wash is a dermatologist-recommended brand that is designed to nourish and moisturize the skin. Dove body washes are paraben and sulfate free, and are suitable for all skin types. 
-        Features
-        Nourishing
-        Dove body washes are designed to leave skin feeling soft, refreshed, and revitalized 
-        Sulfate and paraben free
-        Dove body washes are made with 100% sulfate free cleansers and are paraben free 
-        Suitable for all skin types
-        Dove body washes are designed to be suitable for all skin types 
-        Variety of fragrances
-        Dove body washes come in a range of fragrances, including invigorating, warm, and pampering </p>
-     <br>
-     <h4>Rs. 500 <small class="fw-light text-decoration-line-through">699</small> </h4> <br>
+     <p>Product Description:{{product.description}}
+     <h4>price:{{product.discounted_price}} <small class="fw-light text-decoration-line-through"><del>{{product.selling_price}}</del></small> </h4> <br>
      <button type="submit"><a href="{% url "cart" %}" class="btn btn-primary shadow px-5 py-2">Add to Cart </a> </button>
      <button type="submit"> <a href="{% url "buy" %}" class="btn btn-primary shadow px-5 py-2">Buy Now </a> </button>
      <h5 class="mt-5">Available offers </h5>
      <ul>
         <li>Get voucher of discount 100 on minimun 500 price </li>
+        <li> Bank offer Get upto 25% discount on visa card </li>
      </ul>
     </div>
 </div>
