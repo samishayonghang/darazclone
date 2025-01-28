@@ -1,0 +1,93 @@
+{% extends "daraz/base.html" %}
+
+{% block title %}{% endblock title %}
+<style>
+    /* Custom CSS to mimic Bootstrap styling */
+form input, form select, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+</style>
+
+{% block banner_slider %}{% endblock banner_slider %}
+{% block main-content %}{% endblock main-content %}
+
+{% block category %}{% endblock category %}
+
+
+
+{% block body %}
+<h1>Manage My Account</h1> 
+<div class="container my-5">
+    <div class="row">
+      <!-- Three cards in one row -->
+      <div class="col-md-4 mb-4">
+        <div class="card smoky-card">
+          <div class="card-body">
+            <h5 class="card-title">Personal Profile <a href="{% url 'profile' %}">  |Edit</a></h5>
+            <!-- Card content goes here -->
+            <p>{{profile.name}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card smoky-card">
+          <div class="card-body">
+            <h5 class="card-title">Address Book</h5>
+            <!-- Card content goes here -->
+            <p>{{profile.name}}</p>
+            <p>{{profile.province}} {{profile.city}} {{profile.landmark}} {{profile.phone_number}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card smoky-card">
+          <div class="card-body">
+            <h5 class="card-title">Default Billing Address</h5>
+            <!-- Card content goes here -->
+            <p>{{profile.province}} {{profile.city}} {{profile.landmark}} {{profile.phone_number}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Large card below with Recent Orders title -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card smoky-card">
+          <div class="card-body">
+            <h5 class="card-title">Recent Orders</h5>
+            <!-- Card content goes here -->
+            <p>This is where the recent orders details will go.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock body %}

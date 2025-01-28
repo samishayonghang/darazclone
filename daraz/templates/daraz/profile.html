@@ -1,0 +1,92 @@
+{% extends "daraz/base.html" %}
+
+{% block title %}{% endblock title %}
+
+{% block banner_slider %}{% endblock banner_slider %}
+{% block main-content %}{% endblock main-content %}
+
+{% block category %}{% endblock category %}
+
+{% block body %}
+  
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title text-center mb-4">your profile</h5>
+            <form action="{% url "register" %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              
+             
+             
+            
+              <div class="mb-3">
+                <label for="name" class="form-label visually-hidden">Your Name</label>
+                <input type="text" value=""  name="{{form.name.name}}"class="form-control" id="name" placeholder="Please enter your full name">
+              </div>
+             
+              <div class="mb-3">
+                <label for="number" class="form-label visually-hidden">Phone Number</label>
+                <input type="number"  name="{{form.phone_number.name}}" class="form-control" id="number" placeholder="Enter your phone number">
+                <div id="passwordHelp" class="form-text"></div>
+              </div>
+              <div class="mb-3">
+                <label for="province" class="form-label visually-hidden">Province</label>
+                <select name="province" class="form-control" id="province">
+                  <option value="" disabled selected>Select your province</option>
+                  {% for value, label in province_choices %}
+                      <option value="{{ value }}">{{ label }}</option>
+                  {% endfor %}
+      
+              </div>
+            
+              <div class="mb-3">
+                 <label for="form.city" class="form-label visually-hidden">City</label>
+                 <select name="city" class="form-control" id="city">
+                  <option value="" disabled selected>Select your city</option>
+                  {% for value, label in city_choices %}
+                       <option value="{{ value }}">{{ label }}</option>
+                  {% endfor %}
+             </div>
+
+
+
+              <div class="mb-3">
+                <label for="landmark" class="form-label visually-hidden">Landmark</label>
+                <input type="landmark" name="{{form.landmark.name}}" class="form-control" id="landmark" placeholder="Any airport, school,public area nearby">
+                <div id="LandmarkHelp" class="form-text"> </a></div>
+              </div>
+            
+              
+              <button type="submit" class="btn btn-yellow w-100">SAVE</button>
+              {% if form.errors %}
+                <div class="text-danger">
+                 {% for error in form.non_field_errors %}
+                   <p>{{ error }}</p>
+                 {% endfor %}
+                 {% for field in form %}
+                   {% for error in field.errors %}
+                     <p>{{ error }}</p>
+                   {% endfor %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            
+
+            </form> 
+             
+              
+            
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+{% endblock body %}

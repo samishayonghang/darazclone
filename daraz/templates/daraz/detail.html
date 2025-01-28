@@ -1,27 +1,57 @@
+{% extends "daraz/base.html" %}
 {% load static %}
-{% block title %}Details of product{% endblock title %}
+{% block title %}{% endblock title %}
+{% block banner_slider %}{% endblock banner_slider %}
+{% block main-content %}{% endblock main-content %}
+{% block category %}{% endblock category %}
 
 {% block body %}
 <div class="container my-5">
- <div class="row">
-    <div class="col-sm-6 text-center align-self-center">
-       <img src="{{product.product_image.url}}" %}" alt="" class="img-fluid img-thumbnail">
-    </div>
-    <div class="col-sm-5 offset-sm-1">
-     <h2>Product Title:{{product.title}}</h2>
-     <hr>
-     <p>Product Description:{{product.description}}
-     <h4>price:{{product.discounted_price}} <small class="fw-light text-decoration-line-through"><del>{{product.selling_price}}</del></small> </h4> <br>
-     <button type="submit"><a href="{% url "cart" %}" class="btn btn-primary shadow px-5 py-2">Add to Cart </a> </button>
-     <button type="submit"> <a href="{% url "buy" %}" class="btn btn-primary shadow px-5 py-2">Buy Now </a> </button>
-     <h5 class="mt-5">Available offers </h5>
+   <!-- Create a row that centers the card vertically and horizontally -->
+   <div class="row justify-content-center align-items-center">
+     <!-- The card with image, title, description, and price -->
+     <div class="col-sm-6 " style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        <div class="card" style="width: 18rem; background-color: #f4f4f4;;">
+           <!-- Image inside card -->
+           <img src="{{product.product_image.url}}" alt="" class="card-img-top" style="height: 300px; object-fit: cover;">
+         
+           <!-- Card body with product title, description, price, etc. -->
+           <div class="card-body">
+             <h5 class="card-title">{{product.title}}</h5>
+           
+              <h4 class="" style="color:#FDC600">
+                 Rs.{{product.discounted_price|floatformat:0}} 
+                 <small class="fw-light text-decoration-line-through">
+                    <del>{{product.selling_price|floatformat:0}}</del>
+                 </small> 
+              </h4>
+
+           
+               <div class="mt-3">
+                 <!-- Add to cart and Buy Now buttons -->
+                 <a href="{% url 'cart' %}" class="btn" style="background-color: #FDC600; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                   Add to Cart
+                 </a>
+                 <!-- Buy Now Button -->
+                <a href="{% url 'buy' %}" class="btn" style="background-color: blue; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                    Buy Now
+                </a>
+
+                <p class="card-text">{{product.description}}</p>
+               </div>
+            </div>
+         </div>
+     </div>
+   </div>
+
+   <!-- Available Offers Section -->
+    <hr>
+   <div class="mt-3">
+    <h5>Available Offers</h5>
      <ul>
-        <li>Get voucher of discount 100 on minimun 500 price </li>
-        <li> Bank offer Get upto 25% discount on visa card </li>
+        <li>Get a voucher of discount 100 on minimum 500 price</li>
+        <li>Bank offer: Get up to 25% discount on Visa card</li>
      </ul>
-    </div>
+   </div>
 </div>
-</div>
-
-
 {% endblock body %}

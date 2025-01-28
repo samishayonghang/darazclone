@@ -223,3 +223,37 @@ def logout_view(request):
         return redirect('login')  
 
 
+def profile(request):
+   province_choices = Customer._meta.get_field('province').choices
+   city_choices=Customer._meta.get_field('city').choices
+  
+   if request.method=="POST":
+      name=request.POST.get('name')
+      phone_number=request.POST.get('phone_number')
+      province=request.POST.get('province')
+      city=request.POST.get('city')
+      landmark=request.POST.get('landmark')
+      Customer.objects.create(name=name,
+                           phone_number=phone_number,
+                           province=province,
+                           city=city,
+                           landmark=landmark,
+                        )
+   
+      messages.success(request,"your profile updated sucessfully")
+      return redirect('manageaccount')
+      
+   
+
+   return render(request,'daraz/profile.html',{'province_choices':province_choices,'city_choices':city_choices})
+
+
+def manageacc(request):
+   
+      try:
+        profile=Customer.objects.get(user=request.user)
+      except Customer.DoesNotExist:
+         profile=None
+
+
+      return render(request,'daraz/manageacc.html',{'profile':profile})

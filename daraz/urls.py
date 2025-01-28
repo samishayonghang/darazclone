@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from.views import register,home,loginpage,saveapp,help,changelang,sellerregister,search,cart,flashsale,reset,changepassword,cart,buy,ProductView,activate,password_reset_confirm,logout_view,ProductDetailView
+from.views import register,home,loginpage,saveapp,help,changelang,sellerregister,search,cart,flashsale,reset,changepassword,cart,buy,ProductView,activate,password_reset_confirm,logout_view,ProductDetailView,profile,manageacc
 urlpatterns = [
    path('register/',register,name="register"),
    path('',home,name="home"),
@@ -23,7 +23,9 @@ urlpatterns = [
    path('detail/<int:pk>',ProductDetailView.as_view(),name='detail'),
    path('insidecategory/',ProductView.as_view(),name='insidecategory'),
    path('activate/<str:uidb64>/<str:token>/',activate,name="activate"),
-   path('password_reset_confirm/<uidb64>/<token>/',password_reset_confirm,name="password_reset_confirm")
+   path('password_reset_confirm/<uidb64>/<token>/',password_reset_confirm,name="password_reset_confirm"),
+   path('profile/',profile,name='profile'),
+   path('manageacc/',manageacc,name="manageacc")
 
    
    
