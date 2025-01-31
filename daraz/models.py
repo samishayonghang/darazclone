@@ -171,7 +171,11 @@ CITY_FIELDS = (
     ('Amargadhi', 'Amargadhi'),
     ('Dadeldhura', 'Dadeldhura'),
     )
-
+GENDER_CHOICES=(
+    ('female','female'),
+    ('male','male'),
+    ('other','other'),
+)
 class Customer(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     name=models.CharField(max_length=100)
@@ -180,6 +184,8 @@ class Customer(models.Model):
     address=models.CharField(max_length=50)
     landmark=models.CharField(max_length=100,null=True,blank=True)
     phone_number=models.IntegerField()
+    gender=models.CharField( max_length=50,choices=GENDER_CHOICES,null=True,blank=True)
+
 CATEGORY_CHOICES=(
     ('skincare','skincare'),
     ('groceries','groceries'),
@@ -195,6 +201,7 @@ class Product(models.Model):
     description=models.TextField()
     brand=models.CharField(max_length=100)
     category=models.CharField(choices=CATEGORY_CHOICES, max_length=30)
+    color=models.CharField(max_length=50,blank=True,null=True)
     product_image=models.ImageField(upload_to='productimg' ,max_length=255, null=True, blank=True)
 
 class Cart(models.Model):

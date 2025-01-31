@@ -9,11 +9,14 @@ from django.utils.encoding import force_bytes,force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
 from django.conf import settings
+from django.http import JsonResponse,HttpResponse
 from daraz.utils import send_activation_email,send_resetpassword_email
 from django.contrib.auth.forms import SetPasswordForm
+from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def register(request):
-   print("smaisha")
+   
    if request.method=="POST":
      form=CustomUserCreationForm(request.POST)
      if form.is_valid():
@@ -45,7 +48,12 @@ def register(request):
    return render(request,'daraz/register.html',{'form':form})
 
 def home(request):
-    return render(request,'daraz/base.html')
+     if request.user.is_authenticated:  # Check if user is logged in
+        name = request.user.name  
+        # Get the name field (custom user model)
+     else:
+        name = None  # No u
+     return render(request,'daraz/base.html',{'name':name})
 
 
 def loginpage(request):
@@ -105,10 +113,156 @@ def changelang(request):
 
 def search(request):
    return render(request,'daraz/search.html')
-def cart(request):
-   return render(request,'daraz/cart.html')
+
+def addtocart(request):
+   if request.method=="POST":
+      user=request.user
+      product_id=request.POST.get('prod_id')
+      product=Product.objects.get(id=product_id)
+
+      Cart.objects.create(user=user,product=product).save()
+      return redirect('cart')
+      
+
+      
+
+
+def showcart(request):
+   if request.user.is_authenticated:
+      user=request.user
+      cart=Cart.objects.filter(user=user)
+      print(cart)
+      amount=0.0
+      shippingamount=100.0
+      totalamount=0.0
+      cart_product=[p for p in Cart.objects.all()if p.user==user]
+      #print(cart_product)
+      if cart_product:
+         for p in cart_product:
+            tempamount=(p.quantity*p.product.discounted_price)
+            amount+=tempamount
+         totalamount=amount+shippingamount
+
+   return render(request,'daraz/cart.html',{'carts':cart,'totalamount':totalamount,'amount':amount,'shippingamount':shippingamount})
+@login_required
+def plus_cart(request):
+    if request.method == "GET":
+        user = request.user
+        prod_id = request.GET.get('prod_id')
+
+        # Get the user's cart for the specific product
+        carts = Cart.objects.filter(product_id=int(prod_id), user=user)
+
+        if carts.exists():
+            cart = carts.first()
+            cart.quantity += 1
+            cart.save()
+
+            # Calculate the updated amount and total amount
+            amount = 0.0
+            shippingamount = 100.0  # Static shipping cost (adjust as needed)
+
+            # Calculate total amount for all cart items
+            cart_products = Cart.objects.filter(user=user)
+            for p in cart_products:
+                amount += p.quantity * p.product.discounted_price
+
+            # Calculate total amount including shipping
+            totalamount = amount + shippingamount
+
+            # Prepare the response data
+            data = {
+                'quantity': cart.quantity,
+                'amount': amount,
+                'totalamount': totalamount,
+                'shippingamount': shippingamount
+            }
+
+            return JsonResponse(data)
+        
+def minus_cart(request):
+   if request.method=="GET":
+      user=request.user
+      prod_id=request.GET.get('prod_id')
+      carts=Cart.objects.filter(product_id=int(prod_id),user=user)
+      if carts.exists():
+         cart=carts.first()
+         if cart.quantity > 1:
+  
+          cart.quantity -= 1
+          cart.save()
+         else:
+          cart.delete()  # 
+         amount = 0.0
+         shippingamount = 100.0  # Static shipping cost (adjust as needed)
+
+            # Calculate total amount for all cart items
+         cart_products = Cart.objects.filter(user=user)
+         for p in cart_products:
+            amount += p.quantity * p.product.discounted_price
+
+            # Calculate total amount including shipping
+         totalamount = amount + shippingamount
+
+            # Prepare the response data
+         data = {
+                'quantity': cart.quantity,
+                'amount': amount,
+                'totalamount': totalamount,
+                'shippingamount': shippingamount
+            }
+
+         return JsonResponse(data)
+def remove_cart(request):
+    if request.method == "GET":
+        prod_id = request.GET.get('prod_id')
+        
+        if not prod_id:
+            return HttpResponse("Product ID is required", status=400)
+        
+        try:
+            prod_id = int(prod_id)  # Convert prod_id to an integer
+        except ValueError:
+            return HttpResponse("Invalid Product ID", status=400)
+        
+        user = request.user  # Assuming the user is logged in
+        
+        # Filter the cart using the valid prod_id
+        carts = Cart.objects.filter(product_id=prod_id, user=user)
+
+        if not carts.exists():
+            return HttpResponse("No cart items found for this product.", status=404)
+        
+        # Remove the cart items
+        carts.delete()
+
+        amount = 0.0
+        shippingamount = 100.0  # Static shipping cost (adjust as needed)
+
+        # Calculate total amount for remaining cart items
+        cart_products = Cart.objects.filter(user=user)
+        for p in cart_products:
+            amount += p.quantity * p.product.discounted_price
+
+        # Calculate total amount including shipping
+        totalamount = amount + shippingamount
+
+        # Prepare the response data
+        data = {
+            'amount': amount,
+            'totalamount': totalamount,
+            'shippingamount': shippingamount
+        }
+
+        return JsonResponse(data)
+
+    return HttpResponse("Invalid request method")
+
+    # If the request method is not GET
+    
 def flashsale(request):
    return render(request,'daraz/flash.html')
+
 def reset(request):
    if request.method=="POST":
       form=PasswordResetForm(request.POST)
@@ -226,26 +380,31 @@ def logout_view(request):
 def profile(request):
    province_choices = Customer._meta.get_field('province').choices
    city_choices=Customer._meta.get_field('city').choices
+   gender_choices=Customer._meta.get_field('gender').choices
   
    if request.method=="POST":
+      usr=request.user
       name=request.POST.get('name')
       phone_number=request.POST.get('phone_number')
       province=request.POST.get('province')
       city=request.POST.get('city')
       landmark=request.POST.get('landmark')
-      Customer.objects.create(name=name,
+      gender=request.POST.get('gender')
+      Customer.objects.create(user=usr,
+                            name=name,
                            phone_number=phone_number,
                            province=province,
                            city=city,
                            landmark=landmark,
+                           gender=gender,
                         )
    
       messages.success(request,"your profile updated sucessfully")
-      return redirect('manageaccount')
+      return redirect('manageacc')
       
    
 
-   return render(request,'daraz/profile.html',{'province_choices':province_choices,'city_choices':city_choices})
+   return render(request,'daraz/profile.html',{'province_choices':province_choices,'city_choices':city_choices,'gender_choices':gender_choices})
 
 
 def manageacc(request):
@@ -254,6 +413,37 @@ def manageacc(request):
         profile=Customer.objects.get(user=request.user)
       except Customer.DoesNotExist:
          profile=None
-
+      except Customer.MultipleObjectsReturned:
+        # Handle the case where multiple records exist for the same user
+        profile = Customer.objects.filter(user=request.user).first()  # Or handle accordingly
 
       return render(request,'daraz/manageacc.html',{'profile':profile})
+def checkout(request):
+   
+   
+   customer=Customer.objects.filter(user=request.user).first()
+  
+   cart_items=Cart.objects.filter(user=request.user)
+   amount = 0.0
+   shippingamount = 100.0  # Static shipping cost (adjust as needed)
+
+            # Calculate total amount for all cart items
+   cart_products = Cart.objects.filter(user=request.user)
+   if cart_products:
+    for p in cart_products:
+       
+       amount += p.quantity * p.product.discounted_price
+
+
+     
+          # Calculate total amount including shipping
+    totalamount = amount + shippingamount
+
+
+
+   
+
+   
+   
+
+   return render(request,'daraz/checkout.html',{'customer':customer,'cart':cart_items,'totalamount':totalamount,'shippingamount':shippingamount,'amount':amount})

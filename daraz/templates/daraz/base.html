@@ -7,6 +7,9 @@
     <title>{% block title %}Daraz{% endblock title %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- Bootstrap CSS -->
    
     <style>
@@ -14,73 +17,106 @@
         margin: 0;
         padding: 0;
         width: 100%;
-         }
-    
-        .navbar .nav-link.custom-font {
-            font-size: 0.65rem; /* Adjust to desired size */
-            padding: 0.3rem 0.5rem;
-             /* Compact spacing */
-            color: white;
-        }
-        
-        /* Adjust the search bar size */
-        .custom-search {
-            width: 300px; /* Adjust the width */
-        }
-        
-        /* Align search button properly */
-        .custom-button {
-            padding: 0.3rem 0.75rem; /* Adjust padding */
-            font-size: 0.85rem; /* Match text size */
-        }
-        
-        /* Ensure the navbar looks compact */
-        .navbar {
-            padding: 0.5rem 1rem; /* Reduce overall padding *//
-            width:100%;
-        }
-
-        .container-fluid{
-            background-color:#FF6A13;
-              padding-left: 0;
-              padding-right: 0;
-        }
-        .navbar .container-fluid {
-          padding-left: 0; /* Remove left padding */
-          padding-right: 0; /* Remove right padding */
+        overflow-x: hidden;
       }
+      
+      .navbar {
+        padding: 0;
+        margin: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999; /* Ensure it's on top */
+        width: 100%;
         
-
-        
-        .navbar-brand{
-            color:white;
-            font-size:1rem;
-        }
-       .logo {
-        width: 30px; /* Adjust width */
-        height: auto; /* Maintain aspect ratio */
-       }
-       .link {
-          text-decoration: none !important;  /* Ensures underline is removed */
-          color: blue;         /* Inherit the color from the surrounding text */
-          cursor: default !important;        /* Removes the clickable cursor */
-        }
-        .btn-yellow {
-          background-color:#FF6A13; /* Yellow color */
-          border-color:#FF6A13;     /* Border to match the background */
-          color: white;              /* Text color to make it visible on yellow */
+      }
+      
+      .navbar .container-fluid {
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      
+      .navbar-collapse {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      
+      .navbar .nav-link {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      
+      .navbar .nav-link.custom-font {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.5rem;
+        color: white;
+      }
+      
+      .custom-search {
+        width: 250px;
+      }
+      
+      .navbar, .navbar-nav, .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+      
+      .navbar .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 0;
+        margin-right: 0;
+      }
+      
+      .navbar-brand {
+        color: white;
+        font-size: 1rem;
+      }
+      
+      .logo {
+        width: 30px;
+        height: auto;
+      }
+      
+      .link {
+        text-decoration: none !important;
+        color: blue;
+        cursor: default !important;
+      }
+      
+      .btn-yellow {
+        background-color: #FF6A13;
+        border-color: #FF6A13;
+        color: white;
       }
       
       .btn-yellow:hover {
-          background-color:#FF6A13; /* Slightly darker yellow on hover */
-          border-color:#FF6A13;     /* Same darker border */
+        background-color: #FF6A13;
+        border-color: #FF6A13;
       }
       
+      .carousel {
+        margin-top: 0; /* No gap above the carousel */
+      }
+      
+      .container-fluid {
+        background-color: #FF6A13;
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        padding-top: 0;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+      .nav-item{
+        margin-right: 20px;
+      }
+     
+      
 
-
-
-
-        
     </style>
 </head>
 <body>
@@ -89,7 +125,7 @@
       <div class="container-fluid px-0">
             <!-- Brand -->
         <a class="navbar-brand" href="#">
-          <img src="{% static 'daraz/images/daraz-logo-png_seeklogo-429389.svg' %}" alt="Daraz Logo" style="width: 30px; height: auto; margin-right: 5px; class="logo">
+          <img src="{% static 'daraz/images/daraz-logo-png_seeklogo-429389.svg' %}" alt="Daraz Logo" style="width: 30px; height: auto; margin-right: 5px;"class="logo">
         </a>
             <!-- Toggle Button for Mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,13 +153,20 @@
               <a class="nav-link custom-font" href="{% url 'help' %}">HELP & SUPPORT</a>
             </li>
             {% if user.is_authenticated %}
-             <li class="nav-item">
-              <a class="nav-link custom-font" href="{% url 'profile' %}">{{name}}</a>
+            <li class="nav-item">
+              <a class="nav-link  dropdown-toggle custom-font" href="" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{name|upper}}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Orders</a></li>
+                <li><a class="dropdown-item" href="{% url 'changepass' %}">Changepassword</a></li>
+                
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+             </ul>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link custom-font" href="{% url 'logout' %}">LOGOUT</a>
-            </li>
+            
             {% else %}
             <li class="nav-item">
               <a class="nav-link custom-font" href="{% url 'login' %}">LOGIN</a>
@@ -155,11 +198,11 @@
                 <form class="d-flex w-100" action="{% url 'search' %}" method="GET">
                     <input class="form-control me-2" type="search" name="q" placeholder="Search in daraz" aria-label="Search">
                     <a class="cart" href="{% url "cart" %}">
-                     <img src="{% static 'daraz/images/shopping-cart.svg' %}" alt="cart Logo" style="width: 50px; height: auto; margin-right: 5px; class="logo">
+                     <img src="{% static 'daraz/images/shopping-cart.svg' %}" alt="cart Logo" style="width: 50px; height: auto; margin-right: 5px;" class="logo">
                      </a>
                     
                 </form>
-             </div>
+            </div>
           </div>
        
         </div>
