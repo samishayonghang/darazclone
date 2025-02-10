@@ -41,7 +41,7 @@
                    <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart </button>
                  </form>
                  <!-- Buy Now Button -->
-                 <form action="" class="d-inline">
+                 <form action="{% url 'buy' product.id %}" class="d-inline">
                    <input type="hidden" name="buy_id" value={{buy.id}} id="buy_id_id">
 
                   

@@ -13,16 +13,20 @@
      <div class="d-flex flex-row flex-wrap">
         {% for product in products %}
           <div class="card text-center m-2" style="width: 12rem;">
-            <img src="{{ product.product_image.url }}" class="card-img-top" alt="" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-              <h5 class="card-title fw-bold">
-                <a href="{% url 'detail' product.id %}">{{ product.title }}</a>
-              </h5>
-              <p class="card-text fs-5">
-                <del>Rs.{{ product.selling_price|floatformat:0 }}</del><br>
-                <ins style="text-decoration: none;">Rs.{{ product.discounted_price|floatformat:0 }}</ins>
-              </p>
-            </div>
+            <a href="{% url 'detail' product.id %}">
+              <img src="{{ product.product_image.url }}" class="card-img-top" alt="" style="height: 200px; object-fit: cover;">
+          
+              <div class="card-body">
+                <h5 class="card-title fw-bold">
+                  {{ product.title }}</a>
+                </h5>
+
+                <p class="card-text fs-5">
+                  <del>Rs.{{ product.selling_price|floatformat:0 }}</del><br>
+                  <ins style="text-decoration: none;">Rs.{{ product.discounted_price|floatformat:0 }}</ins>
+                </p>
+              </div>
+            </a>
           </div>
         {% endfor %}
       </div>

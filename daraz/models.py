@@ -195,6 +195,7 @@ CATEGORY_CHOICES=(
 
 )
 class Product(models.Model):
+    
     title=models.CharField(max_length=100)
     selling_price=models.FloatField()
     discounted_price=models.FloatField()
@@ -203,6 +204,9 @@ class Product(models.Model):
     category=models.CharField(choices=CATEGORY_CHOICES, max_length=30)
     color=models.CharField(max_length=50,blank=True,null=True)
     product_image=models.ImageField(upload_to='productimg' ,max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
 
 class Cart(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)

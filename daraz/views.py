@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from.models import User,Customer,Product,Cart,Orderplaced
 from django.views import View
 from.forms import CustomUserCreationForm,PasswordResetForm
@@ -14,6 +14,12 @@ from daraz.utils import send_activation_email,send_resetpassword_email
 from django.contrib.auth.forms import SetPasswordForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+import hmac
+import hashlib
+import base64
+import uuid
+import requests
+
 # Create your views here.
 def register(request):
    
@@ -48,12 +54,15 @@ def register(request):
    return render(request,'daraz/register.html',{'form':form})
 
 def home(request):
-     if request.user.is_authenticated:  # Check if user is logged in
-        name = request.user.name  
+     product=Product.objects.all()
+ 
+     if request.user.is_authenticated:
+         
+         name = request.user.name  
         # Get the name field (custom user model)
      else:
         name = None  # No u
-     return render(request,'daraz/base.html',{'name':name})
+     return render(request,'daraz/base.html',{'name':name,'products':product})
 
 
 def loginpage(request):
@@ -213,9 +222,10 @@ def minus_cart(request):
             }
 
          return JsonResponse(data)
-def remove_cart(request):
+def remove_cart(request,prod_id):
     if request.method == "GET":
-        prod_id = request.GET.get('prod_id')
+       
+        print(f"Received prod_id: {prod_id}") 
         
         if not prod_id:
             return HttpResponse("Product ID is required", status=400)
@@ -235,6 +245,7 @@ def remove_cart(request):
         
         # Remove the cart items
         carts.delete()
+        return redirect('cart')
 
         amount = 0.0
         shippingamount = 100.0  # Static shipping cost (adjust as needed)
@@ -423,7 +434,7 @@ def checkout(request):
    
    customer=Customer.objects.filter(user=request.user).first()
   
-   cart_items=Cart.objects.filter(user=request.user)
+   
    amount = 0.0
    shippingamount = 100.0  # Static shipping cost (adjust as needed)
 
@@ -432,18 +443,174 @@ def checkout(request):
    if cart_products:
     for p in cart_products:
        
-       amount += p.quantity * p.product.discounted_price
+       p.amount = p.quantity * p.product.discounted_price
+       amount += p.amount
 
 
      
           # Calculate total amount including shipping
-    totalamount = amount + shippingamount
+   totalamount = amount + shippingamount
+   return render(request,'daraz/checkout.html',{'customer':customer,'cart_products':cart_products,'totalamount':totalamount,'shippingamount':shippingamount,'amount':amount})
+
+def gotoesewa(request):
+   return render(request,'daraz/gotoesewa.html')  
 
 
 
+def generate_signature(totalamount, transaction_uuid, product_code, secret_key):
+    data = f"{totalamount}|{transaction_uuid}|{product_code}|{secret_key}"
+    signature = hashlib.sha256(data.encode('utf-8')).hexdigest()
+    return signature
+    
+
+def payment_view(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    print(f"Cart Items: {cart_items}")
+    
+    
+    # Calculate the amount
+    amount = sum(item.product.discounted_price * item.quantity for item in cart_items)
+    product_code = [item.product.id for item in cart_items]
+    print(product_code)
+    product_delivery_charge = 100.0  # You can replace this with dynamic delivery charge if needed
+    total_amount = float(amount) + product_delivery_charge
+    
+    # Generate the transaction UUID
+    transaction_uuid = str(uuid.uuid4())
+
+    # Fetch the selected product based on the product_id passed via GET
    
+    
+    
 
+    # Secret key for signature
+    secret_key = "8gBm/:&EnhH.1/q"  # Replace with your secret key
+    signed_field_names = "total_amount,transaction_uuid,product_code,secret_key"
+
+
+    # Generate the signature
+    signature = generate_signature(str(total_amount), transaction_uuid, product_code, secret_key)
+    print(f"Generated Signature: {signature}")  
+    print(f"Amount: {amount}")
+    print(f"Total Amount: {total_amount}")
+    print(f"Transaction UUID: {transaction_uuid}")
+    print(f"Product Code: {product_code}")
+    
+
+    # Prepare the data to pass to the template
+    url = "https://rc-epay.esewa.com.np/api/epay/main/v2/form"
+    data = {
+        "amount": str(amount),
+        "tax_amount": "0",
+        "total_amount": str(total_amount),
+        "transaction_uuid": transaction_uuid,
+        "product_code": product_code,
+        "product_service_charge": "0",
+        "product_delivery_charge": str(product_delivery_charge),
+        "success_url": "http://127.0.0.1:8000/payment/success/",
+        "failure_url": "http://127.0.0.1:8000/payment/failure/",
+        "signed_field_names": signed_field_names,
+        "signature": signature
+    }
+    response = requests.post(url, data=data)
+
+    print(f"Response Status Code: {response.status_code}")
+    print(f"Response Text: {response.text}")
+
+# If the response is JSON, print the parsed response
+    try:
+     response_json = response.json()
+     print(f"JSON Response: {response_json}")
+    except ValueError:
+     print("Response is not in JSON format.")
+    
+    # Render the payment page with the data
+    return render(request, 'daraz/esewarequest.html', {"cart_items": cart_items, **data})
+
+def payment_success(request):
+    ref_id = request.GET.get('refId')
+    verification_url = "https://uat.esewa.com.np/epay/transrec"
+
+    data = {
+        'amt': request.GET.get('amt'),
+        'scd': 'EPAYTEST',
+        'pid': request.GET.get('pid'),
+        'rid': ref_id
+    }
+
+    # Make the verification request to eSewa's server
+    response = request.post(verification_url, data=data)
+    
+    if 'Success' in response.text:
+        Cart.objects.filter(user=request.user).delete()  # Clear the cart after successful payment
+        return HttpResponse("Payment Successful and Verified!")
+    else:
+        return HttpResponse("Payment Verification Failed!")
+
+def payment_failure(request):
+    return HttpResponse("Payment Failed! Please try again.")
+
+
+def paymentdone(request):
+   if request.method=="POST":
+    user=request.user
+    custid=request.POST.get('custid')
+    customer=get_object_or_404(Customer,id=custid)
+    cart=Cart.objects.filter(user=user)
+    for c in cart:
+      Orderplaced(user=user,customer=customer,product=c.product,quantity=c.quantity).save()
+
+      
+    
+   return render(request,'daraz/payment.html')
+   
+      
+
+  
+
+def order(request):
+   print(f"Logged-in user: {request.user}")
+   od=Orderplaced.objects.filter(user=request.user)
+   print(od)
+   for order in od:
+        print(f"Order ID: {order.id}, Product: {order.product}, Discounted Price: {order.product.discounted_price}, Quantity: {order.quantity}")
+        
+   if not od.exists():
+        return render(request, 'daraz/order.html', {'orderplace': od, 'message': 'No orders found.'})
+   amount = 0.0
+   shippingamount= 100.00
+
+    # Loop through the orders to calculate the total amount for each order
+   for order in od:
+        # Calculate total price for each order (product price * quantity)
+        order.amount = order.product.discounted_price * order.quantity
+        amount += order.amount
+        
+   totalamount=amount + shippingamount
+   return render(request,'daraz/order.html',{'od':od,'totalamount':totalamount,'shippingamount':shippingamount,'amount':amount})
+
+
+def buynow(request,prod_id):
    
    
+   customer=Customer.objects.filter(user=request.user).first()
+  
+   
+   amount = 0.0
+   shippingamount = 100.0  # Static shipping cost (adjust as needed)
 
-   return render(request,'daraz/checkout.html',{'customer':customer,'cart':cart_items,'totalamount':totalamount,'shippingamount':shippingamount,'amount':amount})
+            # Calculate total amount for all cart items
+   products = Product.objects.filter(id=prod_id).first()
+   
+   
+   quantity=1
+       
+   products.amount = quantity * products.discounted_price
+   amount += products.amount
+
+
+     
+          # Calculate total amount including shipping
+   totalamount = amount + shippingamount
+   return render(request,'daraz/buy.html',{'customer':customer,'products':products,'totalamount':totalamount,'shippingamount':shippingamount,'amount':amount})
+

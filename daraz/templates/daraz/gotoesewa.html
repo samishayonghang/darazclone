@@ -1,0 +1,61 @@
+{% extends "daraz/base.html" %}
+
+{% block title %}{% endblock title %}
+<style>
+    /* Custom CSS to mimic Bootstrap styling */
+form input, form select, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+</style>
+
+{% block banner_slider %}{% endblock banner_slider %}
+{% block main-content %}{% endblock main-content %}
+
+{% block category %}{% endblock category %}
+
+
+
+{% block body %}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow p-4 text-center" style="width: 50%;">
+        <p>You will be redirected to your eSewa account to complete your payment:</p>
+        <ol class="text-start">
+            <li>Login with your eSewa ID and Password</li>
+            <li>Ensure your account is active with sufficient balance</li>
+            <li>Enter OTP sent to your registered mobile</li>
+        </ol>
+        <p class="fw-bold text-danger">***Login with your eSewa mobile and PASSWORD (not MPin)***</p>
+        <a href="{% url "payment" %}">
+          <button class="btn w-100" style="background-color: #F57224; color: white;">Pay Now</button>
+        </a>
+    </div>
+</div>
+
+
+{% endblock body %}

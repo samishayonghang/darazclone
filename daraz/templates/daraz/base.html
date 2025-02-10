@@ -31,6 +31,13 @@
         width: 100%;
         
       }
+      footer {
+        background-color: #343a40;  /* Dark background */
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+        margin-top: auto;  /* Ensure it stays at the bottom */
+    }
       
       .navbar .container-fluid {
         padding: 0 !important;
@@ -114,6 +121,19 @@
       .nav-item{
         margin-right: 20px;
       }
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .content {
+        flex: 1;
+    }
+    .main-content {
+      flex: 1;
+  }
+ 
+
      
       
 
@@ -159,7 +179,7 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="userDropdown">
                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
-                <li><a class="dropdown-item" href="#">Orders</a></li>
+                <li><a class="dropdown-item" href="{% url 'order' %}">Orders</a></li>
                 <li><a class="dropdown-item" href="{% url 'changepass' %}">Changepassword</a></li>
                 
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
@@ -248,49 +268,26 @@
     
     {% endblock livesale %}
     {% block main-content %}
-    <div class="m-3">
-      <h2>Flash Sale</h2>
+      <h2> flash sale </h2>
       <div class="d-flex flex-row flex-wrap">
-          <!-- Card 1 -->
-        <div class="card text-center m-2" style="width: 12rem;">
-          <img src="{% static 'daraz/images/dove-body-wash-D55BoAC-600.jpg' %}" class="card-img-top" alt="Dove Body Wash" style="height: 200px; object-fit: cover;">
-          <div class="card-body">
-           <h5 class="card-title fw-bold"> <a href="">  Dove Body Wash </a></h5>
-           <p class="card-text fs-5">Rs 500</p>
-         </div>
-        </div>
-          <!-- Card 2 -->
-        <div class="card text-center m-2" style="width: 12rem;">
-          <img src="{% static 'daraz/images/—Pngtree—casual shoes_5626499.png' %}" class="card-img-top" alt="Men Shoes" style="height: 200px; object-fit: cover;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">Men Shoes</h5>
-            <p class="card-text fs-5">Rs 1000</p>
+       {% for product in products %}
+          <div class="card text-center m-2" style="width: 12rem;">
+            <a href="{% url 'detail' product.id %}">
+              <img src="{{ product.product_image.url }}" class="card-img-top" alt="" style="height: 200px; object-fit: cover;">
+              <div class="card-body">
+                <h5 class="card-title fw-bold">
+                  {{ product.title }}
+                </h5>
+               <p class="card-text fs-5">
+                 <del>Rs.{{ product.selling_price|floatformat:0 }}</del><br>
+                 <ins style="text-decoration: none;">Rs.{{ product.discounted_price|floatformat:0 }}</ins>
+                </p>
+              </div>
+            </a>
           </div>
-        </div>
-        <div class="card text-center m-2" style="width: 12rem;">
-         <img src="{% static 'daraz/images/kisspng-sanitary-napkin-always-cloth-napkins-nykaa-menstru-5ae5c32d1af5e0.3092520115250071491104.png' %}" class="card-img-top" alt="Men Shoes" style="height: 200px; object-fit: cover;">
-         <div class="card-body">
-           <h5 class="card-title fw-bold">Sanitary pad</h5>
-           <p class="card-text fs-5">Rs 50</p>
-          </div>
-        </div>
-        <div class="card text-center m-2" style="width: 12rem;">
-          <img src="{% static 'daraz/images/kisspng-hot-water-bottle-heat-bag-small-mini-hot-water-bottle-5a93a8e6262663.1026180115196264701563.png' %}" class="card-img-top" alt="Men Shoes" style="height: 200px; object-fit: cover;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">Hot water bag electrical</h5>
-            <p class="card-text fs-5">Rs 300</p>
-          </div>
-        </div>
-        <div class="card text-center m-2" style="width: 12rem;">
-          <img src="{% static 'daraz/images/kisspng-ceiling-fans-table-punkah-home-appliance-fan-5acb850f5b47d9.5436895615232873113739.png' %}" class="card-img-top" alt="Men Shoes" style="height: 200px; object-fit: cover;">
-          <div class="card-body">
-            <h5 class="card-title fw-bold">Table Fan</h5>
-            <p class="card-text fs-5">Rs 1500</p>
-          </div>
-        </div>
-       
+        {% endfor %}
       </div>
-    </div>
+    
     {% endblock main-content %}
 
     {% block category %}
@@ -346,14 +343,15 @@
         <h1 class="text-center">This is the Daraz Home Page</h1>
     </div>
     {% endblock body %}
-    <footer class="container-fluid bg-dar text-color p-3 mt-5 d-flex flex-column align-items-center text-center">
-      <small class="text-white mb-2">Copyright &copy; 2025 || Designed By Samisha ||</small>
+    <div class="wrapper">
+      <footer class="container-fluid bg-dar text-color p-3 mt-5 d-flex flex-column align-items-center text-center">
+        <small class="text-white mb-2">Copyright &copy; 2025 || Designed By Samisha ||</small>
       
-      <img src="{% static 'daraz/images/' %}" alt="" class="img-fluid mb-2" style="height: 30px;">
+        <img src="{% static 'daraz/images/' %}" alt="" class="img-fluid mb-2" style="height: 30px;">
   
-      <small class="text-white mb-2">Payment Methods</small>
+        <small class="text-white mb-2">Payment Methods</small>
   
-      <div class="d-flex justify-content-center gap-3">
+        <div class="d-flex justify-content-center gap-3">
           <!-- eSewa Icon -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
               <circle cx="12" cy="12" r="12" fill="#1F9F3C" />
@@ -374,11 +372,11 @@
             <text x="50%" y="54%" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="green" font-weight="bold">
                 COD
             </text>
-        </svg>
-      </div>
-    </footer>
+          </svg>
+        </div>
+      </footer>
   
-
+    </div> 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
  </body>

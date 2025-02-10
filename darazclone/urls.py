@@ -16,12 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from daraz import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('daraz.urls')),
     path('',include('customer.urls')),
     path('',include('seller.urls')),
+    path('api/',include('daraz.api.urls')),
 
 ]
 

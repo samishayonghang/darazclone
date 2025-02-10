@@ -1,0 +1,36 @@
+{% extends "daraz/base.html" %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block banner_slider %}{% endblock banner_slider %}
+{% block main-content %}{% endblock main-content %}
+{% block category %}{% endblock category %}
+
+{% block body %}
+<div class="container mt-5">
+    <h4>Select Payment Method</h4>
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <div class="card text-center p-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/633/633611.png" alt="Card" width="40" class="mx-auto">
+                <h6 class="mt-2">Credit/Debit Card</h6>
+            </div>
+                
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center p-3">
+                <a href="{% url 'gotoesewa' %}" style="text-decoration: none;"> <img src="{% static 'daraz/images/kisspng-esewa-fonepay-pvt-ltd-logo-portable-network-grap-index-of-inheadline-public-assets-uploads-newsup-5b6df612161f19.3730711815339330740906 (1).png' %}" alt="eSewa" width="80" class="mx-auto">
+                <h6 class="mt-2">eSewa Mobile Wallet</h6>
+             </a>
+            </div>
+        </div>
+       
+        <div class="col-md-3">
+            <div class="card text-center p-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" alt="Cash on Delivery" width="40" class="mx-auto">
+                <h6 class="mt-2">Cash on Delivery</h6>
+               
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

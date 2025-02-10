@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'daraz',
     'customer',
     'seller',
@@ -155,3 +156,17 @@ EMAIL_USE_TLS=True
 
 #when user click on logout button
 LOGOUT_REDIRECT_URL='login'
+
+ESEWA_MERCHANT_ID = '9806800001/2/3/4/5'
+ESEWA_MERCHANT_PASSWORD = 'Nepal@123'
+ESEWA_SECRET_KEY = '8gBm/:&EnhH.1/q'
+
+# eSewa API URLs
+ESEWA_API_URL = 'https://rc-epay.esewa.com.np/api/epay/main/v2/form'  # Testing URL (use live URL for production)
+ESEWA_SUCCESS_URL = 'http://127.0.0.1:8000/payment/success/'  # Customize as per your success URL
+ESEWA_FAILURE_URL = 'http://127.0.0.1:8000/payment/failure/'  # Customize as per your failure URL
+
+
+REST_FRAMEWORK={
+    'DEFAULT_RENDERE_CLASSES':('rest_framework.renderers.JSONRenderer',)
+}
