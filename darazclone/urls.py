@@ -24,7 +24,7 @@ urlpatterns = [
     path('',include('daraz.urls')),
     path('',include('customer.urls')),
     path('',include('seller.urls')),
-    path('api/',include('daraz.api.urls')),
+   
 
 ]
 

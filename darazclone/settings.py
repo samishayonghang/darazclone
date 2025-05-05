@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+    
     'daraz',
     'customer',
     'seller',
@@ -170,3 +170,7 @@ ESEWA_FAILURE_URL = 'http://127.0.0.1:8000/payment/failure/'  # Customize as per
 REST_FRAMEWORK={
     'DEFAULT_RENDERE_CLASSES':('rest_framework.renderers.JSONRenderer',)
 }
+
+# Allow larger file uploads (e.g., 100MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100 MB

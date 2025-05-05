@@ -20,6 +20,7 @@ import base64
 import uuid
 import requests
 
+
 # Create your views here.
 def register(request):
    
@@ -433,6 +434,9 @@ def checkout(request):
    
    
    customer=Customer.objects.filter(user=request.user).first()
+   print(customer)
+   if not customer:
+    print("No customer found for user:", request.user)
   
    
    amount = 0.0
@@ -614,3 +618,15 @@ def buynow(request,prod_id):
    totalamount = amount + shippingamount
    return render(request,'daraz/buy.html',{'customer':customer,'products':products,'totalamount':totalamount,'shippingamount':shippingamount,'amount':amount})
 
+def search(request):
+    query = request.GET.get('q', '')
+    products = Product.objects.all()  # Fetch all products initially
+
+    if query:
+        # Filter products based on the search query (case-insensitive)
+        products = products.filter(title__icontains=query)  # Replace 'title' with your field name
+
+    return render(request, 'daraz/searchresult.html', {
+        'products': products,
+        'query': query,
+    })
